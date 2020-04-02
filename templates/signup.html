@@ -2,38 +2,74 @@
 
 
 
-<div class="mb-5">
-    <h4 class="mb-3">Billing address</h4>
+<div class="mb-5 mt-5">
+    <h4 class="mb-3">Registration</h4>
+    <hr>
     <!-- delete was-validated to delete errors -->
     <form class="needs-validation was-validated" novalidate="">
-        <div class="mb-3">
-            <label for="questionTitle">Title</label>
-            <input type="text" class="form-control" id="questionTitle" placeholder="Enter question title" value="" required="" maxlength="100">
+        <div class="mb-3 w-50">
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" placeholder="Enter login" value="" required="" maxlength="20" autofocus="">
             <div class="invalid-feedback">
-                Title is required.
+                Please enter a login.
             </div>
         </div>
 
-        <div class="mb-3">
-            <label for="questionText">Text</label>
-            <textarea class="form-control" id="questionText" rows="8" placeholder="Enter question" value="" required="" maxlength="1000"></textarea>
+        <div class="mb-4 w-50">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" placeholder="Enter email address" required="" maxlength="20">
             <div class="invalid-feedback">
-                Question text is required.
+                Please enter a password.
             </div>
         </div>
 
-        <div class="mb-3">
-            <label for="questionTags">Tags</label>
-            <input type="text" class="form-control" id="questionTags" placeholder="Enter tags" value="" required="" maxlength="100">
+        <div class="mb-3 w-50">
+            <label for="nickname">NickName</label>
+            <input type="text" class="form-control" id="nickname" placeholder="Enter nickname" value="" required="" maxlength="20">
             <div class="invalid-feedback">
-                Tags is required.
+                Please enter a nickname.
             </div>
         </div>
 
-        <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Ask</button>
+        <div class="mb-4 w-50">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" value="" required="" maxlength="20">
+            <div class="invalid-feedback">
+                Please enter a password.
+            </div>
+        </div>
+
+        <div class="mb-4 w-50">
+            <label for="repeatPassword">Repeat password</label>
+            <input type="password" class="form-control" id="repeatPassword" placeholder="Enter password" value="" required="" maxlength="20">
+            <div class="invalid-feedback">
+                Please enter a password.
+            </div>
+        </div>
+
+        <div class="mb-4 w-50">
+            <label for="">Upload avatar</label>
+            <br>
+            <label class="btn btn-outline-primary mr-2" for="my-file-selector">
+                <input id="my-file-selector" type="file" style="display:none" accept="image/*"
+                onchange="$('#upload-file-info').html(this.files[0].name)">
+                Choose image
+            </label>
+            <span class='label label-info' id="upload-file-info"></span>
+        </div>
+
+        <div class="alert alert-danger" role="alert">
+            Sorry, this file is not image
+        </div>
+        <div class="alert alert-danger" role="alert">
+            Sorry, this login already used
+        </div>
+        <div class="alert alert-danger" role="alert">
+            Sorry, this email adress already registred
+        </div>
+
+        <input class="btn btn-primary btn-success w-25" type="reset" value="Register">
     </form>
 </div>
-
 
 {% endblock %}
