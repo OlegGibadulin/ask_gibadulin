@@ -5,6 +5,6 @@ def index(request):
     return render(request, 'index.html', {})
 
 def question(request):
-    return render(request, 'base.html', {})
+    return render(request, 'question.html', {})
 
 # Create your views here.
