@@ -7,4 +7,7 @@ def index(request):
 def question(request):
     return render(request, 'question.html', {})
 
+def ask(request):
+    return render(request, 'ask.html', {})
+
 # Create your views here.
