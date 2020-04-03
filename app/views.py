@@ -4,7 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 check = True
 questions = {}
-for i in range(1, 40):
+for i in range(1, 20):
     answers = {}
     questions.update({i: {
         'title': f'Title #{i}',
@@ -24,7 +24,8 @@ for j in range(1, 3):
         'correct_answer': check
     }})
 
-
+favorites_tags = ['python', 'django', 'mysql', 'perl', 'javascript', 'css', 'html', 'c++']
+best_members = ['John', 'Johnny', 'Jack', 'Jackie', 'Jim', 'Jimbo', 'James']
 
 def paginate(object_list, request):
     paginator = Paginator(object_list, 10)
@@ -33,23 +34,28 @@ def paginate(object_list, request):
     return objects_page
 
 def index(request):
-    print(list(questions.keys()))
     cur_questions = paginate(list(questions.values()), request)
-    print(cur_questions)
-    print("!!!!!!!!!!\n")
     return render(request, 'index.html', {
-        'questions': cur_questions
+        'questions': cur_questions,
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
     })
 
 def hot(request):
+    cur_questions = paginate(list(questions.values()), request)
     return render(request, 'hot.html', {
-        'questions': questions.values()
+        'questions': cur_questions,
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
     })
 
 def tag(request, tag_name):
+    cur_questions = paginate(list(questions.values()), request)
     return render(request, 'tag.html', {
-        'questions': questions.values(),
-        'tag_name': tag_name
+        'questions': cur_questions,
+        'tag_name': tag_name,
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
     })
 
 def question(request, qid):
@@ -57,16 +63,27 @@ def question(request, qid):
     print(answers.values())
     return render(request, 'question.html', {
         'question': question,
-        'answers': answers.values()
+        'answers': answers.values(),
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
     })
 
 def login(request):
-    return render(request, 'login.html', {})
+    return render(request, 'login.html', {
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
+    })
 
 def signup(request):
-    return render(request, 'signup.html', {})
+    return render(request, 'signup.html', {
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
+    })
 
 def ask(request):
-    return render(request, 'ask.html', {})
+    return render(request, 'ask.html', {
+        'favorites_tags': favorites_tags,
+        'best_members': best_members
+    })
 
 # Create your views here.

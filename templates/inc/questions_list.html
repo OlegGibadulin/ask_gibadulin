@@ -1,5 +1,5 @@
 {% if questions.end_index == 0 %}
-    <h4>There are not such questions</h4>
+    <h4 class="ml-3 mt-n3 text-secondary">There are not such questions</h4>
 {% else %}
     {% for question in questions %} 
         {% include 'inc/question_card.html' %}
