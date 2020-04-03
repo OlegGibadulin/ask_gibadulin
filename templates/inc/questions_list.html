@@ -1,5 +1,9 @@
-{% for question in questions %} 
-    {% include 'inc/question_card.html' %}
-{% endfor %}
-
-{% include 'inc/pager.html' with page=questions %}
+{% if questions.end_index == 0 %}
+    <h4>There are not such questions</h4>
+{% else %}
+    {% for question in questions %} 
+        {% include 'inc/question_card.html' %}
+    {% endfor %}
+    
+    {% include 'inc/pager.html' with page=questions %}
+{% endif %}

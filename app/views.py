@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 check = True
 questions = {}
-for i in range(1, 11):
+for i in range(1, 40):
     answers = {}
     questions.update({i: {
         'title': f'Title #{i}',
@@ -11,8 +12,7 @@ for i in range(1, 11):
         'id': i,
         'answers_count': 2,
         'rating': i * 100,
-        'tags': ['python', 'django', 'bootstrap', 'html'],
-        'sort_by': 'New question'
+        'tags': ['python', 'django', 'bootstrap', 'html']
     }})
 
 answers = {}
@@ -27,12 +27,18 @@ for j in range(1, 3):
 
 
 def paginate(object_list, request):
+    paginator = Paginator(object_list, 10)
+    page = request.GET.get('page')
+    objects_page = paginator.get_page(page)
     return objects_page
 
-
 def index(request):
+    print(list(questions.keys()))
+    cur_questions = paginate(list(questions.values()), request)
+    print(cur_questions)
+    print("!!!!!!!!!!\n")
     return render(request, 'index.html', {
-        'questions': questions.values()
+        'questions': cur_questions
     })
 
 def hot(request):

@@ -36,7 +36,7 @@
             <p class="d-inline mr-2 ">Tags:</p>
 
             {% for tag in question.tags %}
-                <button type="button " class="btn btn-light ">{{ tag }}</button>
+                <a href="{% url 'tag' tag_name=tag %}" type="button " class="btn btn-light ">{{ tag }}</a>
             {% endfor %}
         </div>
     </div>
