@@ -1,46 +1,11 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
 
 <div class="container-fluid">
     <div class="media mt-5">
-        <div class="mr-4">
-            <div class="">
-                <a href="# ">
-                    <img class="mt-1 mb-4" style="width: 60px;" src="{% static 'img/iguana.png' %} " alt="Avatar ">
-                </a>
-            </div>
-
-            <div class="text-center">
-                <a href="# ">
-                    <img class=" " style="width: 40px; height: 30px; " src="{% static 'img/up.png' %} " alt="Rating Up ">
-                </a>
-                <div class="text-center">
-                    0
-                </div>
-                <a href="# ">
-                    <img class=" " style="width: 40px; height: 30px; " src="{% static 'img/down.png' %} " alt="Rating Down ">
-                </a>
-            </div>
-        </div>
-
-        <div class="media-body">
-            <a href="# " class="h4 ml-lg-3 ">New question?</a>
-            <br>
-            <p class="ml-lg-3 mt-3">
-                Description of question Description of question Description of question Description of question Description of question Description of question Description of question Description of question Description of question Description of question Description
-                of question Description of question Description of question Description of question Description of question
-            </p>
-            <br>
-            <div class="mb-1 ml-lg-3 ">
-                <div class="d-inline-block ">
-                    <p class="d-inline mr-2 ">Tags:</p>
-                    <div class="d-inline-block ">
-                        <button type="button " class="btn btn-light ">python</button>
-                        <button type="button " class="btn btn-light ">django</button>
-                        <button type="button " class="btn btn-light ">bootstrap</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include 'inc/question.html' %}
     </div>
     <hr>
 
@@ -49,7 +14,7 @@
             <div class="mr-4">
                 <div class="">
                     <a href="# ">
-                        <img class="mt-1 mb-4" style="width: 50px;" src="{% static 'img/iguana.png' %} " alt="Avatar ">
+                        <img class="mt-1 mb-4" style="width: 40px;" src="{% static 'img/iguana.png' %} " alt="Avatar ">
                     </a>
                 </div>
 
@@ -96,7 +61,7 @@
             <div class="mr-4">
                 <div class="">
                     <a href="# ">
-                        <img class="mt-1 mb-4" style="width: 50px;" src="{% static 'img/iguana.png' %} " alt="Avatar ">
+                        <img class="mt-1 mb-4" style="width: 40px;" src="{% static 'img/iguana.png' %} " alt="Avatar ">
                     </a>
                 </div>
 
@@ -149,4 +114,5 @@
 
 
 </div>
+
 {% endblock %}
