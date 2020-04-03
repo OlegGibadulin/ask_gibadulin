@@ -6,15 +6,11 @@
 <div class="container-fluid mb-5">
     <div class="mt-5">
         <h3 class="d-inline mr-4 ">New Questions</h3>
-        <a href="# " class="d-inline mr-4 ">Hot Questions</a>
+        <a href="{% url 'hot' %}" class="d-inline mr-4 ">Hot Questions</a>
     </div>
     <hr>
-    
-    {% for question in questions %} 
-        {% include 'inc/question_card.html' %}
-    {% endfor %}
-
-    {% include 'inc/pager.html' with page=questions %}
 </div>
+
+{% include 'inc/questions_list.html' %}
 
 {% endblock %}
