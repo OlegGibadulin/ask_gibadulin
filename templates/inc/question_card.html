@@ -14,7 +14,7 @@
                     <img class=" " style="width: 40px; height: 30px; " src="{% static 'img/up.png' %} " alt="Rating Up ">
                 </a>
                 <div class="text-center">
-                    0
+                    {{ question.rating }}
                 </div>
                 <a href="# ">
                     <img class=" " style="width: 40px; height: 30px; " src="{% static 'img/down.png' %} " alt="Rating Down ">
@@ -23,19 +23,21 @@
         </div>
 
         <div class="media-body">
-            <a href="{% url 'question' qid=question.id %}" class="ml-lg-3 "><h4 class="mt-n3 mb-n3 ml-lg-3">{{ question.title }}</h4></a>
+            <a href="{% url 'question' qid=question.id %}" class=""><h4 class="mt-2 mb-n3 ml-2">{{ question.title }}</h4></a>
             <br>
-            <p class="ml-lg-3 mt-3 ">{{ question.text }}</p>
+            <p class="ml-2 mt-3 ">{{ question.text }}</p>
             <br>
-            <div class="mb-1 ml-lg-3 ">
-                <a href="# " class="d-inline mr-5 ">answers (3)</a>
-                <div class="d-inline-block ">
-                    <p class="d-inline mr-2 ">Tags:</p>
-                    <button type="button " class="btn btn-light ">python</button>
-                    <button type="button " class="btn btn-light ">django</button>
-                    <button type="button " class="btn btn-light ">bootstrap</button>
-                </div>
-            </div>
+            
+        </div>
+    </div>
+    <div class="mb-1" style="margin-left: 85px;">
+        <a href="{% url 'question' qid=question.id %}" class="d-inline mr-4 ">answers ({{ question.answers_count }})</a>
+        <div class="d-inline-block ">
+            <p class="d-inline mr-2 ">Tags:</p>
+
+            {% for tag in question.tags %}
+                <button type="button " class="btn btn-light ">{{ tag }}</button>
+            {% endfor %}
         </div>
     </div>
 </div>
