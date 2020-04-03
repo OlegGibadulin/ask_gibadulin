@@ -1,12 +1,13 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
 
-
+{% block content %}
 
 <div class="mb-5 mt-5">
     <h4 class="mb-3">Registration</h4>
     <hr>
     <!-- delete was-validated to delete errors -->
-    <form class="needs-validation was-validated" novalidate="">
+    <form class="needs-validation" novalidate="">
         <div class="mb-3 w-50">
             <label for="login">Login</label>
             <input type="text" class="form-control" id="login" placeholder="Enter login" value="" required="" maxlength="20" autofocus="">
@@ -58,7 +59,7 @@
             <span class='label label-info' id="upload-file-info"></span>
         </div>
 
-        <div class="alert alert-danger" role="alert">
+        <!-- <div class="alert alert-danger" role="alert">
             Sorry, this file is not image
         </div>
         <div class="alert alert-danger" role="alert">
@@ -66,7 +67,7 @@
         </div>
         <div class="alert alert-danger" role="alert">
             Sorry, this email adress already registred
-        </div>
+        </div> -->
 
         <input class="btn btn-primary btn-success w-25" type="reset" value="Register">
     </form>

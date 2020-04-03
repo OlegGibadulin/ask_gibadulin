@@ -1,12 +1,13 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
 
-
+{% block content %}
 
 <div class="mb-5 mt-5">
     <h4 class="mb-3">Log In</h4>
     <hr>
     <!-- delete was-validated to delete errors -->
-    <form class="needs-validation was-validated" novalidate="">
+    <form class="needs-validation" novalidate="">
         <div class="mb-3 w-50">
             <label for="login">Login</label>
             <input type="text" class="form-control" id="login" placeholder="Enter login" value="" required="" maxlength="20" autofocus="">
@@ -23,12 +24,12 @@
             </div>
         </div>
 
-        <div class="alert alert-danger" role="alert">
+        <!-- <div class="alert alert-danger" role="alert">
             Sorry, this login does not exist
         </div>
         <div class="alert alert-danger" role="alert">
             Sorry, wrong password
-        </div>
+        </div> -->
 
         <button class="btn btn-primary btn-block w-25 mb-2" type="submit">Login in</button>
         <input class="btn btn-primary btn-success w-25" type="reset" value="Sign up">
