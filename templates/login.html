@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="mb-5 mt-5">
+    <h4 class="mb-3">Log In</h4>
+    <hr>
+    <!-- delete was-validated to delete errors -->
+    <form class="needs-validation" novalidate="">
+        <div class="mb-3 w-50">
+            <label for="login">Login</label>
+            <input type="text" class="form-control" id="login" placeholder="Enter login" value="" required="" maxlength="20" autofocus="">
+            <div class="invalid-feedback">
+                Please enter a login.
+            </div>
+        </div>
+
+        <div class="mb-4 w-50">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Enter password" value="" required="" maxlength="20">
+            <div class="invalid-feedback">
+                Please enter a password.
+            </div>
+        </div>
+
+        <div class="alert alert-danger invisible" role="alert">
+            Sorry, this login does not exist
+            Sorry, wrong password
+        </div>
+        
+        <button class="btn btn-primary btn-block w-25 mb-2" type="submit">Login in</button>
+        <a type="button" href="{% url 'signup' %}" class="btn btn-success w-25" role="button">Sign up</a>
+    </form>
+</div>
+
+{% endblock %}

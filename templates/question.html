@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="media mt-3">
+        {% include 'inc/question_card.html' %}
+    </div>
+    <hr>
+
+    {% for answer in answers %}
+        {% include 'inc/answer.html' %}
+    {% endfor %}
+
+    <div class="ml-3 mb-5">
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" rows="8" placeholder="Enter your answer here..."></textarea>
+            </div>
+            <button type="button" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+
+
+</div>
+
+{% endblock %}

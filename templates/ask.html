@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="mb-5 mt-5">
+    <h4 class="mb-3">New question</h4>
+    <hr>
+    <!-- delete was-validated to delete errors -->
+    <form class="needs-validation" novalidate="">
+        <div class="mb-3">
+            <label for="questionTitle">Title</label>
+            <input type="text" class="form-control" id="questionTitle" placeholder="Enter question title" value="" required="" maxlength="80">
+            <div class="invalid-feedback">
+                Please enter a title of question.
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="questionText">Text</label>
+            <textarea class="form-control" id="questionText" rows="8" placeholder="Enter question" value="" required="" maxlength="1000"></textarea>
+            <div class="invalid-feedback">
+                Please enter a question.
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <label for="questionTags">Tags</label>
+            <input type="text" class="form-control" id="questionTags" placeholder="Enter tags" value="" required="" maxlength="40">
+            <div class="invalid-feedback">
+                Please enter tags.
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-block w-25" type="submit">Ask</button>
+    </form>
+</div>
+
+{% endblock %}

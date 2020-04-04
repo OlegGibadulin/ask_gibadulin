@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid mb-3">
+    <div class="mt-5">
+        <h3 class="d-inline mr-4 ">{{ tag_name }}</h3>
+    </div>
+    <hr>
+</div>
+
+{% include 'inc/questions_list.html' %}
+
+{% endblock %}
