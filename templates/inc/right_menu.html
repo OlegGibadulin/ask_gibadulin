@@ -1,16 +1,16 @@
 <div class="container mt-4 ">
     <div class="pt-5 pl-3 ">
         <h4 class="pb-2 ">Popular tags</h4>
-        {% for tag in favorites_tags %}
-            <a href="{% url 'tag' tag_name=tag %}" type="button " class="btn btn-light mb-1 ">{{ tag }}</a>
+        {% for tag in popular_tags.all %}
+            <a href="{% url 'tag' tag_name=tag.name %}" type="button " class="btn btn-light mb-1 ">{{ tag.name }}</a>
         {% endfor %}
     </div>
 
     <div class="pt-5 pl-3 ">
         <h4 class="pb-2 ">Best Members</h4>
         <ol class=" list-unstyled ">
-            {% for nickname in best_members %}
-                <li><a href="# ">{{ nickname }}</a></li>
+            {% for nickname in best_members.all %}
+                <li><a href="# ">{{ nickname.rating }}</a></li>
             {% endfor %}
         </ol>
     </div>

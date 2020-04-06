@@ -4,68 +4,58 @@ from datetime import datetime
 from django.utils import timezone
 from django.core.validators import MinValueValidator
 
-class Profile(models.Model):
-    name = models.CharField(max_length=20, verbose_name='User nickname', unique=True)
-    rating = models.IntegerField(default=0, verbose_name='User rating')
-    # avatar
+class ProfileManager(models.Manager):
+    def best(self):
+        return self.order_by('-rating')[:5]
 
-    user = models.OneToOneField(User, verbose_name='User', on_delete=models.CASCADE)
+class Profile(models.Model):
+    rating = models.IntegerField(default=0)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    objects = ProfileManager()
 
     def __str__(self):
-        return '{} {}'.format(self.name, self.rating)
+        return self.rating
+
+class TagManager(models.Manager):
+    def popular(self):
+        return self.order_by('-references_num')[:10]
 
 class Tag(models.Model):
-    name = models.CharField(
-        max_length=100, verbose_name='Tag name', unique=True, db_index=True
+    name = models.CharField(max_length=100, unique=True, db_index=True)
+    references_num = models.IntegerField(
+        default=0, validators=[MinValueValidator(0)]
     )
-    count = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)], verbose_name='References number'
-    )
+
+    objects = TagManager()
 
     def __str__(self):
         return '{} {}'.format(self.name, self.count)
 
 class QuestionManager(models.Manager):
-    def get_by_date(self):
-        return self.filter(is_active=True).order_by("-pub_date")
+    def newest(self):
+        return self.filter(is_active=True).order_by('-pub_date')
     
-    def get_by_rating(self):
-        return self.filter(is_active=True).order_by("-rating")
+    def hottest(self):
+        return self.filter(is_active=True).order_by('-rating')
 
-    def get_by_tag(self, tag):
-        return self.filter(is_active=True, tags__name=tag)
+    def by_tag(self, tag_name):
+        return self.filter(is_active=True, tags__name=tag_name)
 
 class Question(models.Model):
-    title = models.CharField(max_length=200, verbose_name='Question title')
-    text = models.TextField(verbose_name='Question text')
-    rating = models.IntegerField(
-        default=0, verbose_name='Diff between like and dislike', db_index=True
-    )
-    is_active = models.BooleanField(default=True, verbose_name='Is published question')
-    pub_date = models.DateTimeField(
-        default=timezone.now,
-        verbose_name='Publication time',
-        db_index=True
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    rating = models.IntegerField(default=0, db_index=True)
+    is_active = models.BooleanField(default=True)
+    pub_date = models.DateTimeField(default=timezone.now, db_index=True)
+    answers_number = models.IntegerField(
+        default=0, db_index=True, validators=[MinValueValidator(0)],
     )
 
-    author = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        verbose_name='Question author',
-        related_name='Questions'
-    )
-    tags = models.ManyToManyField(
-        Tag,
-        blank=True,
-        verbose_name='Question tags',
-        related_name='Questions'
-    )
-    like = models.ManyToManyField(
-        Profile, blank=True, verbose_name='Likes', related_name='Questions_likes'
-    )
-    dislike = models.ManyToManyField(
-        Profile, blank=True, verbose_name='Dislikes', related_name='Questions_dislikes'
-    )
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tag, blank=True)
+    likes = models.ManyToManyField(Profile, blank=True, related_name='question_likes')
+    dislikes = models.ManyToManyField(Profile, blank=True, related_name='question_dislikes')
 
     objects = QuestionManager()
 
@@ -73,48 +63,28 @@ class Question(models.Model):
         return self.title
 
 class AnswerManager(models.Manager):
-    def get_by_question_id(self, id):
-        return self.filter(is_active=True, question=id)
+    def newest_by_question(self, id):
+        return self.filter(is_active=True, question=id).order_by('-pub_date')
     
-    def get_by_question_id_by_rating(self, id):
-        return self.filter(is_active=True, question=id).order_by("-rating")
+    def hottest_by_question(self, id):
+        return self.filter(is_active=True, question=id).order_by('-rating')
 
 class Answer(models.Model):
-    text = models.TextField(verbose_name='Answer text')
-    is_correct = models.BooleanField(default=False, verbose_name='Is correct answer')
-    rating = models.IntegerField(default=0, verbose_name='Diff between like and dislike')
-    is_active = models.BooleanField(default=True, verbose_name='Is published answer')
-    pub_date = models.DateTimeField(
-        default=timezone.now,
-        verbose_name='Publication time'
-    )
+    text = models.TextField()
+    is_correct = models.BooleanField(default=False)
+    rating = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    pub_date = models.DateTimeField(default=timezone.now)
 
-    question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE,
-        verbose_name='Question',
-        related_name='Answers'
-    )
-    author = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        verbose_name='Question',
-        related_name='Answers'
-    )
-    like = models.ManyToManyField(
-        Profile, blank=True, verbose_name='Likes', related_name='Answers_likes'
-    )
-    dislike = models.ManyToManyField(
-        Profile, blank=True, verbose_name='Dislikes', related_name='Answers_dislikes'
-    )
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    likes = models.ManyToManyField(Profile, blank=True, related_name='answer_likes')
+    dislikes = models.ManyToManyField(Profile, blank=True, related_name='answer_dislikes')
 
     objects = AnswerManager()
 
     def __str__(self):
         return self.text
-
-    # class Meta:
-    #     order_with_respect_to = 'question'
 
 
 
