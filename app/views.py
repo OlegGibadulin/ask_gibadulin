@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
@@ -49,4 +49,3 @@ def signup(request):
 
 def ask(request):
     return render(request, 'ask.html', context)
-

@@ -10,12 +10,15 @@ class ProfileManager(models.Manager):
 
 class Profile(models.Model):
     rating = models.IntegerField(default=0)
+    avatar = models.ImageField(
+        upload_to='static/img/avatars', default='static/img/iguana.png'
+    )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     objects = ProfileManager()
 
     def __str__(self):
-        return self.rating
+        return self.user.username
 
 class TagManager(models.Manager):
     def popular(self):
@@ -30,7 +33,7 @@ class Tag(models.Model):
     objects = TagManager()
 
     def __str__(self):
-        return '{} {}'.format(self.name, self.count)
+        return '{} {}'.format(self.name, self.references_num)
 
 class QuestionManager(models.Manager):
     def newest(self):
@@ -60,14 +63,16 @@ class Question(models.Model):
     objects = QuestionManager()
 
     def __str__(self):
-        return self.title
+        return '{} {}'.format(self.title, self.rating)
 
 class AnswerManager(models.Manager):
     def newest_by_question(self, id):
-        return self.filter(is_active=True, question=id).order_by('-pub_date')
+        q = Question.objects.get(pk=id)
+        return self.filter(is_active=True, question=q).order_by('-pub_date')
     
     def hottest_by_question(self, id):
-        return self.filter(is_active=True, question=id).order_by('-rating')
+        q = Question.objects.get(pk=id)
+        return self.filter(is_active=True, question=q).order_by('-rating')
 
 class Answer(models.Model):
     text = models.TextField()
@@ -84,7 +89,6 @@ class Answer(models.Model):
     objects = AnswerManager()
 
     def __str__(self):
-        return self.text
-
+        return '{} {}'.format(self.rating, self.text)
 
 
