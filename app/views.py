@@ -1,89 +1,51 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
-check = True
-questions = {}
-for i in range(1, 20):
-    answers = {}
-    questions.update({i: {
-        'title': f'Title #{i}',
-        'text': f'Text #{i}',
-        'id': i,
-        'answers_count': 2,
-        'rating': i * 100,
-        'tags': ['python', 'django', 'bootstrap', 'html']
-    }})
-
-answers = {}
-for j in range(1, 3):
-    check = not check
-    answers.update({j: {
-        'text': f'Answer #{j} of question',
-        'rating': j * 100,
-        'correct_answer': check
-    }})
-
-favorites_tags = ['python', 'django', 'mysql', 'perl', 'javascript', 'css', 'html', 'c++']
-best_members = ['John', 'Johnny', 'Jack', 'Jackie', 'Jim', 'Jimbo', 'James']
+from app.models import Profile, Tag, Question, Answer
 
 def paginate(object_list, request):
-    paginator = Paginator(object_list, 10)
+    paginator = Paginator(list(object_list), 10)
     page = request.GET.get('page')
-    objects_page = paginator.get_page(page)
+    try:
+        objects_page = paginator.get_page(page)
+    except PageNotAnInteger:
+        objects_page = paginator.page(1)
+    except EmptyPage:
+        objects_page = paginator.page(paginator.num_pages)
     return objects_page
 
+context = {
+    'popular_tags': Tag.objects.popular(),
+    'best_members': Profile.objects.best(),
+}
+
 def index(request):
-    cur_questions = paginate(list(questions.values()), request)
-    return render(request, 'index.html', {
-        'questions': cur_questions,
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    newest_questions = Question.objects.newest()
+    context['questions'] = paginate(newest_questions, request)
+    return render(request, 'index.html', context)
 
 def hot(request):
-    cur_questions = paginate(list(questions.values()), request)
-    return render(request, 'hot.html', {
-        'questions': cur_questions,
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    hottest_questions = Question.objects.hottest()
+    context['questions'] = paginate(hottest_questions, request)
+    return render(request, 'hot.html', context)
 
 def tag(request, tag_name):
-    cur_questions = paginate(list(questions.values()), request)
-    return render(request, 'tag.html', {
-        'questions': cur_questions,
-        'tag_name': tag_name,
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    questions_by_tag = Question.objects.by_tag(tag_name)
+    context['questions'] = paginate(questions_by_tag, request)
+    context['tag_name'] = tag_name
+    return render(request, 'tag.html', context)
 
 def question(request, qid):
-    question = questions.get(qid)
-    print(answers.values())
-    return render(request, 'question.html', {
-        'question': question,
-        'answers': answers.values(),
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    context['question'] = Question.objects.get(pk=qid)
+    context['answers'] = Answer.objects.hottest_by_question(qid)
+    return render(request, 'question.html', context)
 
 def login(request):
-    return render(request, 'login.html', {
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    return render(request, 'login.html', context)
 
 def signup(request):
-    return render(request, 'signup.html', {
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
+    return render(request, 'signup.html', context)
 
 def ask(request):
-    return render(request, 'ask.html', {
-        'favorites_tags': favorites_tags,
-        'best_members': best_members
-    })
-
-# Create your views here.
+    return render(request, 'ask.html', context)
