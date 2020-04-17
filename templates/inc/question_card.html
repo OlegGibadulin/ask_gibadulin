@@ -6,7 +6,7 @@
             <div class="">
                 <a href="# ">
                     <!-- <img class="mt-1 mb-4" style="width: 50px;" src="{% static 'img/iguana.png' %} " alt="Avatar "> -->
-                    <img class="mt-1 mb-4" style="width: 50px;" src="{{ question.author.avatar.url }} " alt="Avatar ">
+                    <img class="mt-1 mb-4" style="width: 50px;" src="{{ question.author.avatar.url }}" alt="Avatar ">
                 </a>
             </div>
 
@@ -26,7 +26,7 @@
         <div class="media-body">
             <a href="{% url 'question' qid=question.id %}" class=""><h4 class="mt-2 mb-n3 ml-2">{{ question.title }}</h4></a>
             <br>
-            <p class="ml-2 mt-3 ">{{ question.text }}</p>
+            <p class="ml-2 mt-3 " style="">{{ question.text }}</p>
             <br>
             
         </div>

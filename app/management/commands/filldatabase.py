@@ -7,12 +7,12 @@ from faker import Faker
 f = Faker()
 
 default_avatars = [
-    'static/img/iguana.png',
-    'static/img/dog.png',
-    'static/img/cat.png',
-    'static/img/bird.png',
-    'static/img/mouse.png',
-    'static/img/rabbit.png'
+    '/static/img/iguana.png',
+    '/static/img/dog.png',
+    '/static/img/cat.png',
+    '/static/img/bird.png',
+    '/static/img/mouse.png',
+    '/static/img/rabbit.png'
 ]
 
 class Command(BaseCommand):
@@ -39,7 +39,7 @@ class Command(BaseCommand):
         for _ in range(count):
             Tag.objects.create(
                 name=f.word(),
-                references_num=f.random_int(min=0, max=1000)
+                references_num=0
             )
     
     def fill_questions(self, count):
@@ -60,7 +60,10 @@ class Command(BaseCommand):
 
             cur_tags_id = sample(tags_id, f.random_int(min=1, max=5))
             for tag_id in cur_tags_id:
-                q.tags.add(Tag.objects.get(pk=tag_id))
+                t = Tag.objects.get(pk=tag_id)
+                t.references_num += 1
+                t.save()
+                q.tags.add(t)
             
             likes_num = rtng
             profiles_id_like = sample(profiles_id, likes_num)

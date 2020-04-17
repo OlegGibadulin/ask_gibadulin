@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.utils import timezone
-from django.core.validators import MinValueValidator
 
 class ProfileManager(models.Manager):
     def best(self):
@@ -26,9 +25,7 @@ class TagManager(models.Manager):
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True, db_index=True)
-    references_num = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)]
-    )
+    references_num = models.PositiveIntegerField(default=0)
 
     objects = TagManager()
 
@@ -51,14 +48,14 @@ class Question(models.Model):
     rating = models.IntegerField(default=0, db_index=True)
     is_active = models.BooleanField(default=True)
     pub_date = models.DateTimeField(default=timezone.now, db_index=True)
-    answers_number = models.IntegerField(
-        default=0, db_index=True, validators=[MinValueValidator(0)],
-    )
+    answers_number = models.PositiveIntegerField(default=0)
 
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    author = models.ForeignKey(Profile, on_delete=models.PROTECT)
     tags = models.ManyToManyField(Tag, blank=True)
-    likes = models.ManyToManyField(Profile, blank=True, related_name='question_likes')
-    dislikes = models.ManyToManyField(Profile, blank=True, related_name='question_dislikes')
+    
+    votes = GenericRelation(to=LikeDislike, related_query_name="question")
+    # likes = models.ManyToManyField(Profile, blank=True, related_name='question_likes')
+    # dislikes = models.ManyToManyField(Profile, blank=True, related_name='question_dislikes')
 
     objects = QuestionManager()
 
@@ -82,13 +79,32 @@ class Answer(models.Model):
     pub_date = models.DateTimeField(default=timezone.now)
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    likes = models.ManyToManyField(Profile, blank=True, related_name='answer_likes')
-    dislikes = models.ManyToManyField(Profile, blank=True, related_name='answer_dislikes')
+    author = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    
+    votes = GenericRelation(to=LikeDislike, related_query_name="answer")
+    # likes = models.ManyToManyField(Profile, blank=True, related_name='answer_likes')
+    # dislikes = models.ManyToManyField(Profile, blank=True, related_name='answer_dislikes')
 
     objects = AnswerManager()
 
     def __str__(self):
         return '{} {}'.format(self.rating, self.text)
+
+class LikeDislike(models.Model):
+    like_dislike = models.AutoField(primary_key=True)
+
+    LIKE = 1
+    DISLIKE = -1
+    VOTES = ((LIKE, 'Like'), (DISLIKE, 'Dislike'))
+
+    user = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    vote = models.SmallIntegerField(choices=VOTES)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
+
+    def __str__(self):
+        return '{} {}'.format(self.user, self.vote)
 
 
