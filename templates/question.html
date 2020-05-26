@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="media mt-3">
+    <div class="media mt-4">
         {% include 'inc/question_card.html' %}
     </div>
     <hr>
@@ -13,15 +13,22 @@
         {% include 'inc/answer.html' %}
     {% endfor %}
 
-    <div class="ml-3 mb-5">
-        <form>
-            <div class="form-group">
-                <textarea class="form-control" rows="8" placeholder="Enter your answer here..."></textarea>
-            </div>
-            <button type="button" class="btn btn-primary">Send</button>
-        </form>
-    </div>
+    {% if user.is_authenticated %}
 
+    <br>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            {% for field in form.visible_fields %}
+                {{ field }}
+            {% endfor %}
+            <br>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </div>
+    </form>
+
+    {% endif %}
 
 </div>
 

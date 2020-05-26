@@ -6,23 +6,16 @@
 <div class="mb-5 mt-5">
     <h4 class="mb-3">Log In</h4>
     <hr>
-    <!-- delete was-validated to delete errors -->
-    <form class="needs-validation" novalidate="">
-        <div class="mb-3 w-50">
-            <label for="login">Login</label>
-            <input type="text" class="form-control" id="login" placeholder="Enter login" value="" required="" maxlength="20" autofocus="">
-            <div class="invalid-feedback">
-                Please enter a login.
-            </div>
-        </div>
 
-        <div class="mb-4 w-50">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password" value="" required="" maxlength="20">
-            <div class="invalid-feedback">
-                Please enter a password.
+    <form method="POST">
+        {% csrf_token %}
+        <div class="askme-wrong"> {{ form.non_field_errors.0 }}</div>
+        {% for field in form.visible_fields %}
+            <div class="askme-higher">
+            <label for="title">{{field.label}}</label>
+            {{field.as_widget}}
             </div>
-        </div>
+        {% endfor %}
 
         <div class="alert alert-danger invisible" role="alert">
             Sorry, this login does not exist
