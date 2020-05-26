@@ -7,7 +7,7 @@
     <h4 class="mb-3">New question</h4>
     <hr>
     <!-- delete was-validated to delete errors -->
-    <form class="needs-validation" novalidate="">
+    <!-- <form class="needs-validation" novalidate="">
         <div class="mb-3">
             <label for="questionTitle">Title</label>
             <input type="text" class="form-control" id="questionTitle" placeholder="Enter question title" value="" required="" maxlength="200">
@@ -30,9 +30,18 @@
             <div class="invalid-feedback">
                 Please enter tags.
             </div>
-        </div>
+        </div> -->
 
-        <button class="btn btn-primary btn-block w-25" type="submit">Ask</button>
+    <form method="POST">
+        {% csrf_token %}
+        {% for f in form.visible_fields %}
+            <div class="form-group">
+                <label for="title">{{ f.label }} </label>
+                {{f.as_widget}}
+            </div>
+        {% endfor %}
+
+        <button class="btn btn-primary btn-block w-25" type="submit" name="Ask">Ask</button>
     </form>
 </div>
 
